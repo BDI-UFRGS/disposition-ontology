@@ -1,0 +1,465 @@
+Prefix: dc: <http://purl.org/dc/elements/1.1/>
+Prefix: disp: <https://www.inf.ufrgs.br/bdi/ontologies/disp#>
+Prefix: gufo: <http://purl.org/nemo/gufo#>
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+
+
+
+Ontology: <https://www.inf.ufrgs.br/bdi/ontologies/disp>
+
+Import: <https://nemo-ufes.github.io/gufo/gufo.ttl>
+
+AnnotationProperty: rdfs:comment
+
+    
+Datatype: xsd:decimal
+
+    
+Datatype: xsd:string
+
+    
+ObjectProperty: disp:hasReifiedImpetus
+
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    Domain: 
+        disp:Disposition
+    
+    Range: 
+        disp:Impetus
+    
+    
+ObjectProperty: disp:influences
+
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    Domain: 
+        disp:Disposition
+    
+    Range: 
+        gufo:Quality
+    
+    
+ObjectProperty: gufo:broughtAbout
+
+    
+ObjectProperty: gufo:concernsQualityType
+
+    
+ObjectProperty: gufo:contributedToTrigger
+
+    
+ObjectProperty: gufo:inheresIn
+
+    
+ObjectProperty: gufo:isAspectProperPartOf
+
+    
+ObjectProperty: gufo:manifestedIn
+
+    
+ObjectProperty: gufo:participatedIn
+
+    
+ObjectProperty: gufo:standsIn
+
+    
+ObjectProperty: owl:topObjectProperty
+
+    
+DataProperty: disp:hasDurationInSeconds
+
+    Domain: 
+        gufo:Event
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: disp:hasFlowVelocity
+
+    Domain: 
+        disp:OilFlow
+    
+    Range: 
+        xsd:decimal
+    
+    SubPropertyOf: 
+        owl:topDataProperty
+    
+    
+DataProperty: disp:hasImpetus
+
+    Domain: 
+        disp:Disposition
+    
+    SubPropertyOf: 
+        owl:topDataProperty
+    
+    
+DataProperty: disp:hasImpetusComponent
+
+    Domain: 
+        disp:Impetus
+    
+    
+DataProperty: gufo:concernsQualityValue
+
+    
+DataProperty: gufo:hasQualityValue
+
+    
+DataProperty: owl:topDataProperty
+
+    
+Class: disp:AgentDisposition
+
+    SubClassOf: 
+        disp:Disposition
+    
+    
+Class: disp:ComplexDisposition
+
+    SubClassOf: 
+        disp:Disposition,
+         inverse (gufo:isAspectProperPartOf) some disp:Disposition
+    
+    DisjointWith: 
+        disp:SimpleDisposition
+    
+    
+Class: disp:CriticalFlowVelocity
+
+    SubClassOf: 
+        gufo:Quality,
+        gufo:inheresIn some disp:OilWell
+    
+    
+Class: disp:Disposition
+
+    EquivalentTo: 
+        disp:influences some gufo:Quality
+    
+    SubClassOf: 
+        gufo:IntrinsicMode
+    
+    
+Class: disp:FluxPotential
+
+    SubClassOf: 
+        disp:PatientDisposition,
+        gufo:inheresIn some disp:OilPortion,
+        disp:influences some disp:Position
+    
+    
+Class: disp:Impetus
+
+    SubClassOf: 
+        gufo:AbstractIndividual
+    
+    
+Class: disp:OilExtraction
+
+    EquivalentTo: 
+        (disp:OilFlow)
+		 and (gufo:broughtAbout some 
+            ((gufo:concernsQualityType value disp:Position)
+             and (gufo:concernsQualityValue some xsd:decimal[>= 0.0])))
+         and ( inverse (gufo:contributedToTrigger) some 
+            ((gufo:concernsQualityType value disp:Position)
+             and (gufo:concernsQualityValue some xsd:decimal[< 0.0])))
+    
+    SubClassOf: 
+        disp:OilFlow
+    
+    
+Class: disp:OilFlow
+
+    SubClassOf: 
+        gufo:Event,
+         inverse (gufo:participatedIn) some disp:OilPortion
+    
+    
+Class: disp:OilFlowAtSubcriticalVelocity
+
+    SubClassOf: 
+        disp:OilFlowInWell
+    
+    DisjointWith: 
+        disp:OilFlowAtSupercriticalVelocity
+    
+    
+Class: disp:OilFlowAtSupercriticalVelocity
+
+    SubClassOf: 
+        disp:OilFlowInWell
+    
+    DisjointWith: 
+        disp:OilFlowAtSubcriticalVelocity
+    
+    
+Class: disp:OilFlowInWell
+
+    SubClassOf: 
+        disp:OilFlow,
+         inverse (gufo:participatedIn) some disp:OilWell
+    
+    
+Class: disp:OilPortion
+
+    SubClassOf: 
+        gufo:Quantity
+    
+    
+Class: disp:OilWell
+
+    SubClassOf: 
+        gufo:FunctionalComplex
+    
+    
+Class: disp:PatientDisposition
+
+    SubClassOf: 
+        disp:Disposition
+    
+    
+Class: disp:Permeability
+
+    SubClassOf: 
+        disp:AgentDisposition,
+        gufo:inheresIn some disp:RockUnit,
+        disp:influences some disp:Position
+    
+    
+Class: disp:Position
+
+    SubClassOf: 
+        gufo:Quality,
+        gufo:inheresIn some disp:OilPortion
+    
+    
+Class: disp:RockUnit
+
+    SubClassOf: 
+        gufo:FunctionalComplex
+    
+    
+Class: disp:SimpleDisposition
+
+    EquivalentTo: 
+        disp:influences exactly 1 gufo:Quality
+    
+    SubClassOf: 
+        disp:Disposition
+    
+    DisjointWith: 
+        disp:ComplexDisposition
+    
+    
+Class: disp:Viscosity
+
+    SubClassOf: 
+        disp:PatientDisposition,
+        gufo:inheresIn some disp:OilPortion,
+        disp:influences some disp:Position
+    
+    
+Class: gufo:AbstractIndividual
+
+    
+Class: gufo:Event
+
+    
+Class: gufo:FunctionalComplex
+
+    
+Class: gufo:IntrinsicMode
+
+    
+Class: gufo:Quality
+
+    
+Class: gufo:Quantity
+
+    
+Individual: disp:Position
+
+    
+Individual: disp:criticalVelocity
+
+    Types: 
+        disp:CriticalFlowVelocity
+    
+    Facts:  
+     gufo:inheresIn  disp:oilWell,
+     
+     Annotations: rdfs:comment "Flow velocity = flow rate / crossectional area
+From Ahmed (2010), pp. 591-592, critical oil rate = 21.2 STB/day, or roughly 39 cm^3/s; the wellbore has a radius (r) of 0.25 ft and a perforated interval (h) of 15 ft, with a surface area =  2*pi*r*h = 23.56 ft^2 or roughly 21889 cm^2
+Thus, our critical flow velocity is 39 / 21889 = roughly 0.00178 cm/s"
+                 
+                 gufo:hasQualityValue  0.00178
+    
+    
+Individual: disp:flowEvent1
+
+    Types: 
+        disp:OilFlow
+    
+    Facts:  
+     gufo:broughtAbout  disp:postSituation1,
+     disp:hasDurationInSeconds  61500000
+    
+    
+Individual: disp:flowEvent2
+
+    Types: 
+        disp:OilFlow
+    
+    Facts:  
+     gufo:broughtAbout  disp:postSituation2,
+     disp:hasDurationInSeconds  2024
+    
+    
+Individual: disp:fluxPotential1
+
+    Types: 
+        disp:FluxPotential,
+		disp:SimpleDisposition
+    
+    Facts:  
+     gufo:inheresIn  disp:oilPortion,
+     gufo:manifestedIn  disp:flowEvent1,
+     disp:influences  disp:position,
+     disp:hasImpetus  0.013
+    
+    
+Individual: disp:fluxPotential2
+
+    Types: 
+        disp:FluxPotential,
+		disp:SimpleDisposition
+    
+    Facts:  
+     gufo:inheresIn  disp:oilPortion,
+     gufo:manifestedIn  disp:flowEvent2,
+     disp:influences  disp:position,
+     disp:hasImpetus  0.014
+    
+    
+Individual: disp:oilPortion
+
+    Types: 
+        disp:OilPortion
+    
+    Facts:  
+     gufo:participatedIn  disp:flowEvent1,
+     gufo:participatedIn  disp:flowEvent2
+    
+    
+Individual: disp:oilWell
+
+    Types: 
+        disp:OilWell
+    
+    Facts:  
+     gufo:participatedIn  disp:flowEvent1,
+     gufo:participatedIn  disp:flowEvent2
+    
+    
+Individual: disp:permeability
+
+    Types: 
+        disp:Permeability,
+		disp:SimpleDisposition
+    
+    Facts:  
+     gufo:inheresIn  disp:rockUnit,
+     gufo:manifestedIn  disp:flowEvent1,
+     gufo:manifestedIn  disp:flowEvent2,
+     disp:influences  disp:position,
+     disp:hasImpetus  0.0935
+    
+    
+Individual: disp:position
+
+    Types: 
+        disp:Position
+    
+    Facts:  
+     gufo:inheresIn  disp:oilPortion,
+     gufo:standsIn  disp:preSituation1,
+     gufo:standsIn  disp:preSituation2
+    
+    
+Individual: disp:postSituation1
+
+    Facts:  
+     gufo:concernsQualityType  disp:Position
+    
+    
+Individual: disp:postSituation2
+
+    Facts:  
+     gufo:concernsQualityType  disp:Position
+    
+    
+Individual: disp:preSituation1
+
+    Facts:  
+     gufo:concernsQualityType  disp:Position,
+     gufo:contributedToTrigger  disp:flowEvent1,
+     gufo:concernsQualityValue  -102400
+    
+    
+Individual: disp:preSituation2
+
+    Facts:  
+     gufo:concernsQualityType  disp:Position,
+     gufo:contributedToTrigger  disp:flowEvent2,
+     gufo:concernsQualityValue  -2048
+    
+    
+Individual: disp:rockUnit
+
+    Types: 
+        disp:RockUnit
+    
+    
+Individual: disp:viscosity
+
+    Types: 
+        disp:Viscosity,
+		disp:SimpleDisposition
+    
+    Facts:  
+     gufo:inheresIn  disp:oilPortion,
+     gufo:manifestedIn  disp:flowEvent1,
+     gufo:manifestedIn  disp:flowEvent2,
+     disp:influences  disp:position,
+     disp:hasImpetus  0.73
+    
+    
+Rule: 
+    disp:OilFlow(?e), disp:OilWell(?w), gufo:participatedIn(?w, ?e), disp:hasFlowVelocity(?e, ?v), gufo:inheresIn(?qv, ?w), disp:CriticalFlowVelocity(?qv), gufo:hasQualityValue(?qv, ?maxv), greaterThanOrEqual(?v, ?maxv) -> disp:OilFlowAtSupercriticalVelocity(?e)
+
+Rule: 
+    disp:OilFlow(?e), disp:OilWell(?w), gufo:participatedIn(?w, ?e), disp:hasFlowVelocity(?e, ?v), gufo:inheresIn(?qv, ?w), disp:CriticalFlowVelocity(?qv), gufo:hasQualityValue(?qv, ?maxv), lessThan(?v, ?maxv) -> disp:OilFlowAtSubcriticalVelocity(?e)
+
+Rule: 
+    disp:Position(?p), disp:Permeability(?dp), disp:Viscosity(?dv), disp:FluxPotential(?df), gufo:manifestedIn(?dp, ?e), gufo:manifestedIn(?dv, ?e), gufo:manifestedIn(?df, ?e), gufo:contributedToTrigger(?pre, ?e), gufo:standsIn(?p, ?pre), gufo:concernsQualityValue(?pre, ?p0), gufo:broughtAbout(?e, ?post), disp:hasImpetus(?dp, ?ip), disp:hasImpetus(?dv, ?iv), disp:hasImpetus(?df, ?if), divide(?x, ?ip, ?iv), multiply(?v, ?x, ?if), disp:hasDurationInSeconds(?e, ?t), multiply(?delta, ?t, ?v), add(?p1, ?delta, ?p0) -> gufo:standsIn(?p, ?post), gufo:concernsQualityValue(?post, ?p1), disp:hasFlowVelocity(?e, ?v)
+
+Rule: 
+    disp:influences(?d, ?q), gufo:inheresIn(?d, ?a), gufo:inheresIn(?q, ?p),  DifferentFrom (?a, ?p) -> disp:AgentDisposition(?d)
+
+Rule: 
+    disp:influences(?d, ?q), gufo:inheresIn(?d, ?b), gufo:inheresIn(?q, ?b) -> disp:PatientDisposition(?d)
+
+Rule: 
+    disp:influences(?d, ?q1), disp:influences(?d, ?q2),  DifferentFrom (?q1, ?q2) -> disp:ComplexDisposition(?d)
+
