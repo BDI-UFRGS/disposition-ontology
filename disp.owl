@@ -21,7 +21,7 @@ Datatype: xsd:decimal
     
 Datatype: xsd:string
 
-    
+# Object Properties
 ObjectProperty: disp:hasReifiedImpetus
 
     SubPropertyOf: 
@@ -32,6 +32,18 @@ ObjectProperty: disp:hasReifiedImpetus
     
     Range: 
         disp:Impetus
+    
+    
+ObjectProperty: disp:typeInfluence
+
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    Domain: 
+        disp:DispositionType
+    
+    Range: 
+        disp:QualityType
     
     
 ObjectProperty: disp:influences
@@ -46,6 +58,26 @@ ObjectProperty: disp:influences
         gufo:Quality
     
     
+ObjectProperty: disp:iof
+
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    Range: 
+        gufo:Type
+    
+    
+ObjectProperty: disp:containedIn
+
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    Domain: 
+        gufo:Object
+    
+    Range: 
+        gufo:Object
+		
 ObjectProperty: gufo:broughtAbout
 
     
@@ -72,7 +104,7 @@ ObjectProperty: gufo:standsIn
     
 ObjectProperty: owl:topObjectProperty
 
-    
+#Data Properties
 DataProperty: disp:hasDurationInSeconds
 
     Domain: 
@@ -117,21 +149,107 @@ DataProperty: gufo:hasQualityValue
     
 DataProperty: owl:topDataProperty
 
-    
-Class: disp:AgentDisposition
+# Types
+Class: disp:AspectType
 
     SubClassOf: 
-        disp:Disposition
+        gufo:EndurantType
+    
+Class: disp:QualityType
+
+    SubClassOf: 
+        disp:AspectType,
+		inverse (disp:iof) only gufo:Quality
+		
+		
+Class: disp:DispositionType
+
+    SubClassOf: 
+        disp:AspectType,
+		inverse (disp:iof) only disp:Disposition
+    
+Class: disp:AgentDispositionType
+
+    SubClassOf: 
+        disp:DispositionType
     
     
-Class: disp:ComplexDisposition
+Class: disp:PatientDispositionType
+
+    SubClassOf: 
+        disp:DispositionType
+    
+# Aspects and Abstracts
+Class: disp:Disposition
+    
+    SubClassOf: 
+        gufo:IntrinsicAspect
+    
+    
+Class: disp:Impetus
+
+    SubClassOf: 
+        gufo:AbstractIndividual
+    
+    
+# Objects from the oil flow model
+Class: disp:OilPortion
+
+    SubClassOf: 
+        gufo:Quantity
+    
+    
+Class: disp:RockUnit
+
+    SubClassOf: 
+        gufo:FunctionalComplex
+    
+    
+Class: disp:OilWell
+
+    SubClassOf: 
+        gufo:FunctionalComplex
+    
+# Dispositions from the oil flow model
+Class: disp:FluxPotential
+
+    EquivalentTo: 
+        disp:iof value disp:FluxPotential
 
     SubClassOf: 
         disp:Disposition,
-         inverse (gufo:isAspectProperPartOf) some disp:Disposition
+        gufo:inheresIn some disp:OilPortion
     
-    DisjointWith: 
-        disp:SimpleDisposition
+    
+Class: disp:Permeability
+
+    EquivalentTo: 
+        disp:iof value disp:Permeability
+
+    SubClassOf: 
+        disp:Disposition,
+        gufo:inheresIn some disp:RockUnit
+    
+    
+Class: disp:Viscosity
+
+    EquivalentTo: 
+        disp:iof value disp:Viscosity
+
+    SubClassOf: 
+        disp:Disposition,
+        gufo:inheresIn some disp:OilPortion
+    
+    
+# Qualities from the oil flow model
+Class: disp:Position
+
+    EquivalentTo: 
+        disp:iof value disp:Position
+
+    SubClassOf: 
+        gufo:Quality,
+        gufo:inheresIn some disp:OilPortion
     
     
 Class: disp:CriticalFlowVelocity
@@ -140,28 +258,12 @@ Class: disp:CriticalFlowVelocity
         gufo:Quality,
         gufo:inheresIn some disp:OilWell
     
-    
-Class: disp:Disposition
-
-    EquivalentTo: 
-        disp:influences some gufo:Quality
-    
-    SubClassOf: 
-        gufo:IntrinsicMode
-    
-    
-Class: disp:FluxPotential
+# Events from the oil flow model
+Class: disp:OilFlow
 
     SubClassOf: 
-        disp:PatientDisposition,
-        gufo:inheresIn some disp:OilPortion,
-        disp:influences some disp:Position
-    
-    
-Class: disp:Impetus
-
-    SubClassOf: 
-        gufo:AbstractIndividual
+        gufo:Event,
+         inverse (gufo:participatedIn) some disp:OilPortion
     
     
 Class: disp:OilExtraction
@@ -177,13 +279,6 @@ Class: disp:OilExtraction
     
     SubClassOf: 
         disp:OilFlow
-    
-    
-Class: disp:OilFlow
-
-    SubClassOf: 
-        gufo:Event,
-         inverse (gufo:participatedIn) some disp:OilPortion
     
     
 Class: disp:OilFlowAtSubcriticalVelocity
@@ -211,65 +306,6 @@ Class: disp:OilFlowInWell
          inverse (gufo:participatedIn) some disp:OilWell
     
     
-Class: disp:OilPortion
-
-    SubClassOf: 
-        gufo:Quantity
-    
-    
-Class: disp:OilWell
-
-    SubClassOf: 
-        gufo:FunctionalComplex
-    
-    
-Class: disp:PatientDisposition
-
-    SubClassOf: 
-        disp:Disposition
-    
-    
-Class: disp:Permeability
-
-    SubClassOf: 
-        disp:AgentDisposition,
-        gufo:inheresIn some disp:RockUnit,
-        disp:influences some disp:Position
-    
-    
-Class: disp:Position
-
-    SubClassOf: 
-        gufo:Quality,
-        gufo:inheresIn some disp:OilPortion
-    
-    
-Class: disp:RockUnit
-
-    SubClassOf: 
-        gufo:FunctionalComplex
-    
-    
-Class: disp:SimpleDisposition
-
-    EquivalentTo: 
-        disp:influences exactly 1 gufo:Quality
-    
-    SubClassOf: 
-        disp:Disposition
-    
-    DisjointWith: 
-        disp:ComplexDisposition
-    
-    
-Class: disp:Viscosity
-
-    SubClassOf: 
-        disp:PatientDisposition,
-        gufo:inheresIn some disp:OilPortion,
-        disp:influences some disp:Position
-    
-    
 Class: gufo:AbstractIndividual
 
     
@@ -287,10 +323,40 @@ Class: gufo:Quality
     
 Class: gufo:Quantity
 
-    
+# Individuals (punned types)
 Individual: disp:Position
 
-    
+    Types: 
+        disp:QualityType
+		
+Individual: disp:FluxPotential
+
+    Types: 
+        disp:PatientDispositionType
+		
+	Facts:
+		disp:typeInfluence disp:Position
+		
+		
+Individual: disp:Viscosity
+
+    Types: 
+        disp:PatientDispositionType
+		
+	Facts:
+		disp:typeInfluence disp:Position
+		
+		
+Individual: disp:Permeability
+
+    Types: 
+        disp:AgentDispositionType
+		
+	Facts:
+		disp:typeInfluence disp:Position
+
+
+# Individual Qualities    
 Individual: disp:criticalVelocity
 
     Types: 
@@ -305,7 +371,7 @@ Thus, our critical flow velocity is 39 / 21889 = roughly 0.00178 cm/s"
                  
                  gufo:hasQualityValue  0.00178
     
-    
+# Individual Events
 Individual: disp:flowEvent1
 
     Types: 
@@ -325,41 +391,79 @@ Individual: disp:flowEvent2
      gufo:broughtAbout  disp:postSituation2,
      disp:hasDurationInSeconds  2024
     
-    
+# Individual Dispositions
 Individual: disp:fluxPotential1
 
     Types: 
-        disp:FluxPotential,
-		disp:SimpleDisposition
+        disp:FluxPotential
     
     Facts:  
      gufo:inheresIn  disp:oilPortion,
-     gufo:manifestedIn  disp:flowEvent1,
-     disp:influences  disp:position,
-     disp:hasImpetus  0.013
+     disp:hasImpetus  0.013,
+     gufo:standsIn  disp:preSituation1
     
     
 Individual: disp:fluxPotential2
 
     Types: 
-        disp:FluxPotential,
-		disp:SimpleDisposition
+        disp:FluxPotential
     
     Facts:  
      gufo:inheresIn  disp:oilPortion,
-     gufo:manifestedIn  disp:flowEvent2,
-     disp:influences  disp:position,
-     disp:hasImpetus  0.014
+     disp:hasImpetus  0.014,
+     gufo:standsIn  disp:preSituation2
     
     
+Individual: disp:permeability
+
+    Types: 
+        disp:Permeability
+    
+    Facts:  
+     gufo:inheresIn  disp:rockUnit,
+     disp:hasImpetus  0.0935,
+     gufo:standsIn  disp:preSituation1,
+     gufo:standsIn  disp:preSituation2
+    
+    
+Individual: disp:viscosity
+
+    Types: 
+        disp:Viscosity
+    
+    Facts:  
+     gufo:inheresIn  disp:oilPortion,
+     disp:hasImpetus  0.73,
+     gufo:standsIn  disp:preSituation1,
+     gufo:standsIn  disp:preSituation2
+    
+# Individual Qualities
+Individual: disp:position
+
+    Types: 
+        disp:Position
+    
+    Facts:  
+     gufo:inheresIn  disp:oilPortion,
+     gufo:standsIn  disp:preSituation1,
+     gufo:standsIn  disp:preSituation2
+    
+# Individual Objects
 Individual: disp:oilPortion
 
     Types: 
         disp:OilPortion
     
     Facts:  
+     disp:containedIn disp:rockUnit,
      gufo:participatedIn  disp:flowEvent1,
      gufo:participatedIn  disp:flowEvent2
+    
+    
+Individual: disp:rockUnit
+
+    Types: 
+        disp:RockUnit
     
     
 Individual: disp:oilWell
@@ -371,44 +475,7 @@ Individual: disp:oilWell
      gufo:participatedIn  disp:flowEvent1,
      gufo:participatedIn  disp:flowEvent2
     
-    
-Individual: disp:permeability
-
-    Types: 
-        disp:Permeability,
-		disp:SimpleDisposition
-    
-    Facts:  
-     gufo:inheresIn  disp:rockUnit,
-     gufo:manifestedIn  disp:flowEvent1,
-     gufo:manifestedIn  disp:flowEvent2,
-     disp:influences  disp:position,
-     disp:hasImpetus  0.0935
-    
-    
-Individual: disp:position
-
-    Types: 
-        disp:Position
-    
-    Facts:  
-     gufo:inheresIn  disp:oilPortion,
-     gufo:standsIn  disp:preSituation1,
-     gufo:standsIn  disp:preSituation2
-    
-    
-Individual: disp:postSituation1
-
-    Facts:  
-     gufo:concernsQualityType  disp:Position
-    
-    
-Individual: disp:postSituation2
-
-    Facts:  
-     gufo:concernsQualityType  disp:Position
-    
-    
+# Individual Situations
 Individual: disp:preSituation1
 
     Facts:  
@@ -424,42 +491,55 @@ Individual: disp:preSituation2
      gufo:contributedToTrigger  disp:flowEvent2,
      gufo:concernsQualityValue  -2048
     
-    
-Individual: disp:rockUnit
+Individual: disp:postSituation1
 
-    Types: 
-        disp:RockUnit
-    
-    
-Individual: disp:viscosity
-
-    Types: 
-        disp:Viscosity,
-		disp:SimpleDisposition
-    
     Facts:  
-     gufo:inheresIn  disp:oilPortion,
-     gufo:manifestedIn  disp:flowEvent1,
-     gufo:manifestedIn  disp:flowEvent2,
-     disp:influences  disp:position,
-     disp:hasImpetus  0.73
+     gufo:concernsQualityType  disp:Position
     
     
+Individual: disp:postSituation2
+
+    Facts:  
+     gufo:concernsQualityType  disp:Position
+    
+    
+# Rules for classifying OilFlow events according to the flow velocity
 Rule: 
     disp:OilFlow(?e), disp:OilWell(?w), gufo:participatedIn(?w, ?e), disp:hasFlowVelocity(?e, ?v), gufo:inheresIn(?qv, ?w), disp:CriticalFlowVelocity(?qv), gufo:hasQualityValue(?qv, ?maxv), greaterThanOrEqual(?v, ?maxv) -> disp:OilFlowAtSupercriticalVelocity(?e)
 
 Rule: 
     disp:OilFlow(?e), disp:OilWell(?w), gufo:participatedIn(?w, ?e), disp:hasFlowVelocity(?e, ?v), gufo:inheresIn(?qv, ?w), disp:CriticalFlowVelocity(?qv), gufo:hasQualityValue(?qv, ?maxv), lessThan(?v, ?maxv) -> disp:OilFlowAtSubcriticalVelocity(?e)
 
+# Rule for the combination function
 Rule: 
-    disp:Position(?p), disp:Permeability(?dp), disp:Viscosity(?dv), disp:FluxPotential(?df), gufo:manifestedIn(?dp, ?e), gufo:manifestedIn(?dv, ?e), gufo:manifestedIn(?df, ?e), gufo:contributedToTrigger(?pre, ?e), gufo:standsIn(?p, ?pre), gufo:concernsQualityValue(?pre, ?p0), gufo:broughtAbout(?e, ?post), disp:hasImpetus(?dp, ?ip), disp:hasImpetus(?dv, ?iv), disp:hasImpetus(?df, ?if), divide(?x, ?ip, ?iv), multiply(?v, ?x, ?if), disp:hasDurationInSeconds(?e, ?t), multiply(?delta, ?t, ?v), add(?p1, ?delta, ?p0) -> gufo:standsIn(?p, ?post), gufo:concernsQualityValue(?post, ?p1), disp:hasFlowVelocity(?e, ?v)
+    disp:Position(?p), disp:Permeability(?dp), disp:Viscosity(?dv), disp:FluxPotential(?df), 
+	disp:influences(?dp,?p), disp:influences(?dv,?p), disp:influences(?df, ?p),  
+	disp:hasImpetus(?dp, ?ip), disp:hasImpetus(?dv, ?iv), disp:hasImpetus(?df, ?if), 
+	gufo:standsIn(?dp,?pre), gufo:standsIn(?dv,?pre), gufo:standsIn(?df,?pre),
+	gufo:contributedToTrigger(?pre, ?e), gufo:standsIn(?p, ?pre), gufo:concernsQualityValue(?pre, ?p0), gufo:broughtAbout(?e, ?post), 
+	divide(?x, ?ip, ?iv), multiply(?v, ?x, ?if), disp:hasDurationInSeconds(?e, ?t), multiply(?delta, ?t, ?v), add(?p1, ?delta, ?p0) 
+	-> gufo:standsIn(?p, ?post), gufo:concernsQualityValue(?post, ?p1), disp:hasFlowVelocity(?e, ?v),
+	   gufo:manifestedIn(?dp, ?e), gufo:manifestedIn(?dv, ?e), gufo:manifestedIn(?df, ?e)
+
+ObjectProperty: disp:dispositionalContact
+	SubPropertyOf:
+		owl:topObjectProperty
+	Domain:
+		disp:Disposition
+	Range:
+		gufo:Quality
+		
+# Rule for influence from dispositionalContact
+ Rule:
+	disp:iof(?d,?D), disp:iof(?q,?Q), disp:typeInfluence(?D,?Q), disp:dispositionalContact(?d,?q) -> disp:influences(?d,?q)
+	
+# Rule for patient disposition contact
+Rule:
+	disp:PatientDispositionType(?D), disp:iof(?d,?D), gufo:Quality(?q), gufo:inheresIn(?d, ?b), gufo:inheresIn(?q, ?b) -> disp:dispositionalContact(?d,?q)
 
 Rule: 
-    disp:influences(?d, ?q), gufo:inheresIn(?d, ?a), gufo:inheresIn(?q, ?p),  DifferentFrom (?a, ?p) -> disp:AgentDisposition(?d)
+    disp:AgentDispositionType(?D), disp:iof(?d,?D), disp:influences(?d, ?q), gufo:inheresIn(?d, ?a), gufo:inheresIn(?q, ?p) -> DifferentFrom(?a, ?p)
 
-Rule: 
-    disp:influences(?d, ?q), gufo:inheresIn(?d, ?b), gufo:inheresIn(?q, ?b) -> disp:PatientDisposition(?d)
-
-Rule: 
-    disp:influences(?d, ?q1), disp:influences(?d, ?q2),  DifferentFrom (?q1, ?q2) -> disp:ComplexDisposition(?d)
-
+# Rule for permeability influence/dispositional contact
+Rule:
+	disp:Permeability(?d), gufo:inheresIn(?d,?rock), disp:containedIn(?oil,?rock), gufo:inheresIn(?q,?oil), disp:Position(?q) -> disp:dispositionalContact(?d,?q)
