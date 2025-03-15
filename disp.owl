@@ -58,7 +58,7 @@ ObjectProperty: disp:influences
         gufo:Quality
     
     
-ObjectProperty: disp:iof
+ObjectProperty: disp:instanceOf
 
     SubPropertyOf: 
         owl:topObjectProperty
@@ -159,14 +159,14 @@ Class: disp:QualityType
 
     SubClassOf: 
         disp:AspectType,
-		inverse (disp:iof) only gufo:Quality
+		inverse (disp:instanceOf) only gufo:Quality
 		
 		
 Class: disp:DispositionType
 
     SubClassOf: 
         disp:AspectType,
-		inverse (disp:iof) only disp:Disposition
+		inverse (disp:instanceOf) only disp:Disposition
     
 Class: disp:AgentDispositionType
 
@@ -214,7 +214,7 @@ Class: disp:OilWell
 Class: disp:FluxPotential
 
     EquivalentTo: 
-        disp:iof value disp:FluxPotential
+        disp:instanceOf value disp:FluxPotential
 
     SubClassOf: 
         disp:Disposition,
@@ -224,7 +224,7 @@ Class: disp:FluxPotential
 Class: disp:Permeability
 
     EquivalentTo: 
-        disp:iof value disp:Permeability
+        disp:instanceOf value disp:Permeability
 
     SubClassOf: 
         disp:Disposition,
@@ -234,7 +234,7 @@ Class: disp:Permeability
 Class: disp:Viscosity
 
     EquivalentTo: 
-        disp:iof value disp:Viscosity
+        disp:instanceOf value disp:Viscosity
 
     SubClassOf: 
         disp:Disposition,
@@ -245,7 +245,7 @@ Class: disp:Viscosity
 Class: disp:Position
 
     EquivalentTo: 
-        disp:iof value disp:Position
+        disp:instanceOf value disp:Position
 
     SubClassOf: 
         gufo:Quality,
@@ -531,14 +531,14 @@ ObjectProperty: disp:dispositionalContact
 		
 # Rule for influence from dispositionalContact
  Rule:
-	disp:iof(?d,?D), disp:iof(?q,?Q), disp:typeInfluence(?D,?Q), disp:dispositionalContact(?d,?q) -> disp:influences(?d,?q)
+	disp:instanceOf(?d,?D), disp:instanceOf(?q,?Q), disp:typeInfluence(?D,?Q), disp:dispositionalContact(?d,?q) -> disp:influences(?d,?q)
 	
 # Rule for patient disposition contact
 Rule:
-	disp:PatientDispositionType(?D), disp:iof(?d,?D), gufo:Quality(?q), gufo:inheresIn(?d, ?b), gufo:inheresIn(?q, ?b) -> disp:dispositionalContact(?d,?q)
+	disp:PatientDispositionType(?D), disp:instanceOf(?d,?D), disp:instanceOf(?q,?Q), disp:typeInfluence(?D,?Q), gufo:inheresIn(?d, ?b), gufo:inheresIn(?q, ?b) -> disp:dispositionalContact(?d,?q)
 
 Rule: 
-    disp:AgentDispositionType(?D), disp:iof(?d,?D), disp:influences(?d, ?q), gufo:inheresIn(?d, ?a), gufo:inheresIn(?q, ?p) -> DifferentFrom(?a, ?p)
+    disp:AgentDispositionType(?D), disp:instanceOf(?d,?D), disp:influences(?d, ?q), gufo:inheresIn(?d, ?a), gufo:inheresIn(?q, ?p) -> DifferentFrom(?a, ?p)
 
 # Rule for permeability influence/dispositional contact
 Rule:
