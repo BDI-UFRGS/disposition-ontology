@@ -217,8 +217,13 @@ Class: disp:FluxPotential
         disp:instanceOf value disp:FluxPotential
 
     SubClassOf: 
-        disp:Disposition,
-        gufo:inheresIn some disp:OilPortion
+        disp:Disposition
+
+
+Class: disp:OilFluxPotential
+
+    EquivalentTo: 
+        disp:FluxPotential and gufo:inheresIn some disp:OilPortion
     
     
 Class: disp:Permeability
@@ -227,8 +232,13 @@ Class: disp:Permeability
         disp:instanceOf value disp:Permeability
 
     SubClassOf: 
-        disp:Disposition,
-        gufo:inheresIn some disp:RockUnit
+        disp:Disposition
+    
+    
+Class: disp:RockPermeability
+
+    EquivalentTo: 
+        disp:Permeability and gufo:inheresIn some disp:RockUnit
     
     
 Class: disp:Viscosity
@@ -241,6 +251,12 @@ Class: disp:Viscosity
         gufo:inheresIn some disp:OilPortion
     
     
+Class: disp:OilViscosity
+
+    EquivalentTo: 
+        disp:Viscosity and gufo:inheresIn some disp:OilPortion
+    
+    
 # Qualities from the oil flow model
 Class: disp:Position
 
@@ -250,6 +266,12 @@ Class: disp:Position
     SubClassOf: 
         gufo:Quality,
         gufo:inheresIn some disp:OilPortion
+
+
+Class: disp:OilPosition
+
+    EquivalentTo: 
+        disp:Position and gufo:inheresIn some disp:OilPortion
     
     
 Class: disp:CriticalFlowVelocity
