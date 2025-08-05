@@ -34,7 +34,7 @@ ObjectProperty: disp:hasReifiedImpetus
         disp:Impetus
     
     
-ObjectProperty: disp:typeInfluence
+ObjectProperty: disp:operatesOn
 
     SubPropertyOf: 
         owl:topObjectProperty
@@ -357,7 +357,7 @@ Individual: disp:FluxPotential
         disp:PatientDispositionType
 		
 	Facts:
-		disp:typeInfluence disp:Position
+		disp:operatesOn disp:Position
 		
 		
 Individual: disp:Viscosity
@@ -366,7 +366,7 @@ Individual: disp:Viscosity
         disp:PatientDispositionType
 		
 	Facts:
-		disp:typeInfluence disp:Position
+		disp:operatesOn disp:Position
 		
 		
 Individual: disp:Permeability
@@ -375,7 +375,7 @@ Individual: disp:Permeability
         disp:AgentDispositionType
 		
 	Facts:
-		disp:typeInfluence disp:Position
+		disp:operatesOn disp:Position
 
 
 # Individual Qualities    
@@ -553,11 +553,11 @@ ObjectProperty: disp:dispositionalContact
 		
 # Rule for influence from dispositionalContact
  Rule:
-	disp:instanceOf(?d,?D), disp:instanceOf(?q,?Q), disp:typeInfluence(?D,?Q), disp:dispositionalContact(?d,?q) -> disp:influences(?d,?q)
+	disp:instanceOf(?d,?D), disp:instanceOf(?q,?Q), disp:operatesOn(?D,?Q), disp:dispositionalContact(?d,?q) -> disp:influences(?d,?q)
 	
 # Rule for patient disposition contact
 Rule:
-	disp:PatientDispositionType(?D), disp:instanceOf(?d,?D), disp:instanceOf(?q,?Q), disp:typeInfluence(?D,?Q), gufo:inheresIn(?d, ?b), gufo:inheresIn(?q, ?b) -> disp:dispositionalContact(?d,?q)
+	disp:PatientDispositionType(?D), disp:instanceOf(?d,?D), disp:instanceOf(?q,?Q), disp:operatesOn(?D,?Q), gufo:inheresIn(?d, ?b), gufo:inheresIn(?q, ?b) -> disp:dispositionalContact(?d,?q)
 
 Rule: 
     disp:AgentDispositionType(?D), disp:instanceOf(?d,?D), disp:influences(?d, ?q), gufo:inheresIn(?d, ?a), gufo:inheresIn(?q, ?p) -> DifferentFrom(?a, ?p)
